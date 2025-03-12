@@ -88,7 +88,7 @@
 
             document.getElementById("tSubtrahend").value = Math.floor(subtrahend / 1000) || '';
             document.getElementById("hSubtrahend").value = Math.floor((subtrahend % 1000) / 100) || '';
-            document.getElementById("zSubtrahend").value = Math.floor((subtrahend % 100) / 10) || '';
+            document.getElementById("zSubtrahend").value = Math.floor((subtrahend % 100) / 10) ;
             document.getElementById("eSubtrahend").value = subtrahend % 10;
             
             document.querySelectorAll(".input-box").forEach(input => input.value = '');
