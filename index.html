@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schriftliche Subtraktion</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { margin-top: 20px; }
+        .number-box { display: inline-block; width: 50px; height: 50px; font-size: 24px; text-align: center; }
+        .input-box { width: 50px; height: 50px; font-size: 24px; text-align: center; }
+        .result-box { background-color: #ccffcc; }
+        .carry-box { background-color: #ffff99; height: 25px; font-size: 18px; }
+        .row { margin: 5px; display: flex; justify-content: center; align-items: center; }
+        button { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1>Schriftliche Subtraktion üben</h1>
+    <div class="container">
+        <div class="row">
+            <span>&nbsp;</span>
+            <input class="number-box" id="tMinuend" disabled>
+            <input class="number-box" id="hMinuend" disabled>
+            <input class="number-box" id="zMinuend" disabled>
+            <input class="number-box" id="eMinuend" disabled>
+        </div>
+        <div class="row">
+            <span>-</span>
+            <input class="number-box" id="tSubtrahend" disabled>
+            <input class="number-box" id="hSubtrahend" disabled>
+            <input class="number-box" id="zSubtrahend" disabled>
+            <input class="number-box" id="eSubtrahend" disabled>
+        </div>
+        <div class="row">
+            <span>&nbsp;</span>
+            <input class="input-box carry-box" id="tÜbertrag">
+            <input class="input-box carry-box" id="hÜbertrag">
+            <input class="input-box carry-box" id="zÜbertrag">
+            <input class="input-box carry-box" id="eÜbertrag">
+        </div>
+        <hr style="width: 260px;">
+        <div class="row">
+            <span>&nbsp;</span>
+            <input class="input-box result-box" id="tErgebnis">
+            <input class="input-box result-box" id="hErgebnis">
+            <input class="input-box result-box" id="zErgebnis">
+            <input class="input-box result-box" id="eErgebnis">
+        </div>
+        <button onclick="prüfen()">Prüfen</button>
+        <button onclick="neueAufgabe()">Neue Aufgabe</button>
+        <p id="feedback"></p>
+    </div>
+    <script>
+        let minuend, subtrahend, differenz;
+        let überträge = [0, 0, 0, 0];
+
+        function neueAufgabe() {
+            minuend = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
+            subtrahend = Math.floor(Math.random() * (999 - 10 + 1)) + 10;
+            if (subtrahend > minuend) {
+                [minuend, subtrahend] = [subtrahend, minuend];
+            }
+            differenz = minuend - subtrahend;
+            berechneÜberträge();
+
+            document.getElementById("tMinuend").value = Math.floor(minuend / 1000);
+            document.getElementById("hMinuend").value = Math.floor((minuend % 1000) / 100);
+            document.getElementById("zMinuend").value = Math.floor((minuend % 100) / 10);
+            document.getElementById("eMinuend").value = minuend % 10;
+
+            document.getElementById("tSubtrahend").value = Math.floor(subtrahend / 1000) || '';
+            document.getElementById("hSubtrahend").value = Math.floor((subtrahend % 1000) / 100) || '';
+            document.getElementById("zSubtrahend").value = Math.floor((subtrahend % 100) / 10) || '';
+            document.getElementById("eSubtrahend").value = subtrahend % 10;
+
+            document.getElementById("tÜbertrag").value = '';
+            document.getElementById("hÜbertrag").value = '';
+            document.getElementById("zÜbertrag").value = '';
+            document.getElementById("eÜbertrag").value = '';
+            document.getElementById("tErgebnis").value = '';
+            document.getElementById("hErgebnis").value = '';
+            document.getElementById("zErgebnis").value = '';
+            document.getElementById("eErgebnis").value = '';
+            document.getElementById("feedback").innerText = '';
+        }
+
+        function berechneÜberträge() {
+            let min = minuend.toString().padStart(4, '0').split('').map(Number);
+            let sub = subtrahend.toString().padStart(4, '0').split('').map(Number);
+            überträge = [0, 0, 0, 0];
+
+            for (let i = 3; i > 0; i--) {
+                if (min[i] < sub[i]) {
+                    überträge[i - 1] = 1;
+                    min[i - 1]--;
+                    min[i] += 10;
+                }
+            }
+        }
+
+        function prüfen() {
+            let übertragEingabe = [
+                parseInt(document.getElementById("tÜbertrag").value) || 0,
+                parseInt(document.getElementById("hÜbertrag").value) || 0,
+                parseInt(document.getElementById("zÜbertrag").value) || 0,
+                parseInt(document.getElementById("eÜbertrag").value) || 0
+            ];
+
+            let tEingabe = document.getElementById("tErgebnis").value;
+            let hEingabe = document.getElementById("hErgebnis").value;
+            let zEingabe = document.getElementById("zErgebnis").value;
+            let eEingabe = document.getElementById("eErgebnis").value;
+            let eingabe = parseInt(tEingabe || 0) * 1000 + parseInt(hEingabe || 0) * 100 + parseInt(zEingabe || 0) * 10 + parseInt(eEingabe || 0);
+
+            if (eingabe === differenz && JSON.stringify(übertragEingabe) === JSON.stringify(überträge)) {
+                document.getElementById("feedback").innerText = "Richtig! Gut gemacht!";
+            } else {
+                document.getElementById("feedback").innerText = "Leider falsch. Prüfe deine Überträge und das Ergebnis erneut.";
+            }
+        }
+
+        neueAufgabe();
+    </script>
+</body>
+</html>
