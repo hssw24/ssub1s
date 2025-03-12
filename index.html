@@ -23,9 +23,9 @@
             z-index: 10;
         }
         .overlay button { 
-            width: 30px; 
-            height: 30px; 
-            font-size: 20px; 
+            width: 40px; 
+            height: 40px; 
+            font-size: 30px; 
             margin: 2px; 
         }
     </style>
@@ -57,10 +57,10 @@
         <hr style="width: 260px;">
         <div class="row">
             <span>&nbsp;</span>
-            <input class="input-box result-box" id="tErgebnis" onclick="showOverlay(event)">
-            <input class="input-box result-box" id="hErgebnis" onclick="showOverlay(event)">
-            <input class="input-box result-box" id="zErgebnis" onclick="showOverlay(event)">
-            <input class="input-box result-box" id="eErgebnis" onclick="showOverlay(event)">
+            <input class="input-box result-box" id="tErgebnis" onclick="showOverlay(event)" readonly>
+            <input class="input-box result-box" id="hErgebnis" onclick="showOverlay(event)" readonly>
+            <input class="input-box result-box" id="zErgebnis" onclick="showOverlay(event)" readonly>
+            <input class="input-box result-box" id="eErgebnis" onclick="showOverlay(event)" readonly>
         </div>
         <button onclick="prüfen()">Prüfen</button>
         <button onclick="neueAufgabe()">Neue Aufgabe</button>
